@@ -8,4 +8,13 @@ export class ServiceRepository {
     const newService = this.repo.create(data);
     return this.repo.save(newService);
   }
+
+  async deleteById(id: number): Promise<void> {
+    const service = await this.repo.findOneBy({id});
+    if (!service) throw new Error("Service not found");
+
+    // ✅ Use .remove() to trigger the afterRemove subscriber
+    await this.repo.remove(service);
+  }
 }
+

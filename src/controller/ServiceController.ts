@@ -27,4 +27,24 @@ export class ServiceController {
       res.status(500).json({ error: "Internal server error" });
     }
   };
+
+  delete = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const id = parseInt(req.params.id);
+
+      if (isNaN(id)) {
+        res.status(400).json({ error: "Invalid service ID" });
+        return;
+      }
+
+      await this.service.deleteService(id);
+      res.status(200).json({ message: `Service with ID ${id} deleted` });
+    } catch (error: any) {
+      if (error.message === "Service not found") {
+        res.status(404).json({ error: error.message });
+      } else {
+        res.status(500).json({ error: "Internal server error" });
+      }
+    }
+  };
 }

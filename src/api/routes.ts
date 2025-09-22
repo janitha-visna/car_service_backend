@@ -11,5 +11,6 @@ const controller = new ServiceController();
 
 // Define the route that uses the handler
 router.post("/services",controller.create);
+router.delete("/services/:id", controller.delete);
 
 export default router;

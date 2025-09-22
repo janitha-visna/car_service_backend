@@ -7,4 +7,8 @@ export class ServiceService {
   async createService(data: Partial<Service>): Promise<Service> {
     return this.repo.create(data);
   }
+
+  async deleteService(id:number):Promise<void>{
+    await this.repo.deleteById(id);
+  }
 }
