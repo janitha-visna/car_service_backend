@@ -1,38 +1,12 @@
+// src/app.ts
 import express from "express";
-import { AppDataSource } from "./data-source";
-import { Service } from "./entities/Services";
+import serviceRoutes from "./api/routes";
 
 const app = express();
 app.use(express.json());
 
-AppDataSource.initialize()
-  .then(() => {
-    console.log("📦 Data Source has been initialized!");
-  })
-  .catch((err) => {
-    console.error("❌ Error during Data Source initialization:", err);
-  });
+// Use your route file
+app.use("/api", serviceRoutes); // URL will be /api/services
 
-app.post("/services", async (req, res) => {
-  try {
-    const { vehicle_id, service_type_id, service_datetime, amount } = req.body;
+export default app;
 
-    const serviceRepo = AppDataSource.getRepository(Service);
-    const newService = serviceRepo.create({
-      vehicle_id,
-      service_type_id,
-      service_datetime: new Date(service_datetime),
-      amount,
-    });
-
-    const saved = await serviceRepo.save(newService);
-    res.status(201).json({ message: "Service created", service: saved });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-app.listen(3000, () => {
-  console.log("🚀 Server running at http://localhost:3000");
-});
