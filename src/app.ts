@@ -1,12 +1,25 @@
 // src/app.ts
 import express from "express";
 import serviceRoutes from "./api/routes";
+import { buildSchema } from "type-graphql";
+import { ServiceResolver } from "./resolvers/service";
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@as-integrations/express5";
 
-const app = express();
-app.use(express.json());
+export async function createApp() {
+  const app = express();
 
-// Use your route file
-app.use("/api", serviceRoutes); // URL will be /api/services
+  const schema = await buildSchema({
+    resolvers: [ServiceResolver],
+    validate: true,
+  });
 
-export default app;
+  const server = new ApolloServer({ schema });
 
+  await server.start();
+
+  app.use(express.json()); // for parsing application/json
+  app.use("/", expressMiddleware(server)); // GraphQL at "/"
+
+  return app;
+}

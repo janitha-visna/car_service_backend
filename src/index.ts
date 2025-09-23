@@ -1,15 +1,19 @@
 // src/index.ts
-import app from "./app";
+import { createApp } from "./app";
 import { AppDataSource } from "./data-source";
 
-AppDataSource.initialize()
-  .then(() => {
+async function main() {
+  try {
+    await AppDataSource.initialize();
     console.log("📦 Data Source initialized");
 
-    app.listen(3000, () => {
-      console.log("🚀 Server running at http://localhost:3000");
+    const app = await createApp();
+    app.listen(4000, () => {
+      console.log("🚀 GraphQL server running at http://localhost:4000");
     });
-  })
-  .catch((err) => {
-    console.error("❌ Failed to initialize data source:", err);
-  });
+  } catch (err) {
+    console.error("❌ Server failed to start:", err);
+  }
+}
+
+main();
