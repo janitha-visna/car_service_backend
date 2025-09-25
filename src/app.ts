@@ -5,6 +5,7 @@ import { buildSchema } from "type-graphql";
 import { ServiceResolver } from "./resolvers/service";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@as-integrations/express5";
+import { ErrorHandler } from "./errors/error-handler";
 
 export async function createApp() {
   const app = express();
@@ -20,6 +21,6 @@ export async function createApp() {
 
   app.use(express.json()); // for parsing application/json
   app.use("/", expressMiddleware(server)); // GraphQL at "/"
-
+ 
   return app;
 }

@@ -124,3 +124,6 @@ temp/
 
 # Lerna
 lerna-debug.log*
+
+#error logs
+app_error.log

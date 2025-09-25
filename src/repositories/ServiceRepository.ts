@@ -1,5 +1,6 @@
 import { AppDataSource } from "../data-source";
 import { Service } from "../entities/Services";
+import { AppError, NotFoundError } from "../errors/app-errors";
 
 export class ServiceRepository {
   private repo = AppDataSource.getRepository(Service);
@@ -9,9 +10,9 @@ export class ServiceRepository {
     return this.repo.save(newService);
   }
 
-  async deleteById(id: number): Promise<void> {
+  async  deleteById(id: number): Promise<void> {
     const service = await this.repo.findOneBy({id});
-    if (!service) throw new Error("Service not found");
+    if (!service) throw new NotFoundError;
 
     // ✅ Use .remove() to trigger the afterRemove subscriber
     await this.repo.remove(service);
