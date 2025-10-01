@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { ServiceSubscriber } from "./subscribers/ServiceSubscriber";
-import { Service, RevenueSummaryMonthly } from "./entities";
+import { Service, RevenueSummaryMonthly,Revenue } from "./entities";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -12,6 +12,6 @@ export const AppDataSource = new DataSource({
   database: "car_service",
   synchronize: true, // Disable in production
   logging: false,
-  entities: [Service, RevenueSummaryMonthly],
+  entities: [Service, RevenueSummaryMonthly,Revenue],
   subscribers: [ServiceSubscriber],
 });
